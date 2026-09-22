@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Bite Around the World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF3E3;
+    --cream-2:#F3E6CB;
+    --ink:#2B1B14;
+    --ink-soft:#6B5644;
+    --paprika:#C2452D;
+    --paprika-dark:#9C3620;
+    --saffron:#E8A93B;
+    --olive:#6B7A4F;
+    --plum:#6B2D45;
+    --plum-dark:#4E1F34;
+    --line: rgba(43,27,20,0.14);
+    --card-shadow: 0 14px 34px rgba(107,45,69,0.12);
+    --font-display:'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body:'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    box-sizing:border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --cream:#241712;
+      --cream-2:#2E1E17;
+      --ink:#F5E9DC;
+      --ink-soft:#CBB39E;
+      --paprika:#E2593B;
+      --paprika-dark:#F0794F;
+      --saffron:#F0B754;
+      --olive:#8CA06B;
+      --plum:#9C4C6B;
+      --plum-dark:#B76487;
+      --line: rgba(245,233,220,0.14);
+      --card-shadow: 0 14px 34px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --cream:#241712;
+    --cream-2:#2E1E17;
+    --ink:#F5E9DC;
+    --ink-soft:#CBB39E;
+    --paprika:#E2593B;
+    --paprika-dark:#F0794F;
+    --saffron:#F0B754;
+    --olive:#8CA06B;
+    --plum:#9C4C6B;
+    --plum-dark:#B76487;
+    --line: rgba(245,233,220,0.14);
+    --card-shadow: 0 14px 34px rgba(0,0,0,0.35);
+  }
+  html{ scroll-behavior:smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img,svg{ max-width:100%; display:block; }
+  h1,h2,h3{ font-family:var(--font-display); margin:0; font-weight:600; letter-spacing:-0.01em; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  button{ font-family:var(--font-body); cursor:pointer; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- Top nav ---------- */
+  .topnav{
+    position:fixed; top:0; left:0; right:0; z-index:60;
+    padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    padding-bottom:14px;
+    display:flex; align-items:center; justify-content:space-between;
+    background: color-mix(in srgb, var(--cream) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+    transform: translateY(-100%);
+    transition: transform .45s cubic-bezier(.22,.9,.3,1);
+  }
+  .topnav.show{ transform:translateY(0); }
+  .topnav-inner{ max-width:1080px; margin:0 auto; padding:0 24px; width:100%; display:flex; align-items:center; justify-content:space-between; }
+  .topnav .brand{ font-family:var(--font-display); font-size:1.05rem; font-weight:600; white-space:nowrap; }
+  .topnav nav{ display:flex; gap:22px; }
+  .topnav nav a{ text-decoration:none; font-size:.92rem; color:var(--ink-soft); transition:color .2s; }
+  .topnav nav a:hover{ color:var(--paprika); }
+  @media (max-width:640px){ .topnav nav a:nth-child(3){ display:none; } }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding: calc(96px + env(safe-area-inset-top,0px)) 24px 96px;
+    background: linear-gradient(155deg, var(--plum) 0%, var(--plum-dark) 38%, var(--paprika-dark) 78%, var(--paprika) 100%);
+    color: var(--cream);
+    text-align:center;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle at 18% 22%, rgba(255,255,255,0.10) 0, transparent 36%),
+                       radial-gradient(circle at 84% 12%, rgba(255,255,255,0.08) 0, transparent 30%),
+                       radial-gradient(circle at 90% 80%, rgba(255,255,255,0.06) 0, transparent 32%);
+    pointer-events:none;
+  }
+  .hero-inner{ position:relative; max-width:680px; margin:0 auto; }
+  .hero-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:7px 16px; border-radius:999px;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.28);
+    font-size:.82rem; color:var(--cream);
+    opacity:0; transform:translateY(10px);
+    animation: rise .7s ease forwards .05s;
+  }
+  .hero h1{
+    font-size: clamp(2.5rem, 8vw, 4.2rem);
+    line-height:1.04;
+    margin: 22px 0 14px;
+    opacity:0; transform:translateY(14px);
+    animation: rise .8s ease forwards .18s;
+  }
+  .hero .subtitle{
+    font-family:var(--font-display); font-style:italic; font-weight:500;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--saffron);
+    opacity:0; transform:translateY(14px);
+    animation: rise .8s ease forwards .32s;
+  }
+  .hero .intro{
+    margin:22px auto 0; max-width:520px;
+    font-size:1.02rem; line-height:1.65; color:rgba(251,243,227,0.88);
+    opacity:0; transform:translateY(14px);
+    animation: rise .8s ease forwards .46s;
+  }
+  .hero .cta{
+    margin-top:34px; display:inline-flex; align-items:center; gap:10px;
+    background:var(--cream); color:var(--paprika-dark);
+    border:none; padding:15px 30px; border-radius:999px;
+    font-size:1rem; font-weight:600;
+    box-shadow:0 12px 28px rgba(0,0,0,0.25);
+    transition: transform .25s ease, box-shadow .25s ease;
+    opacity:0; transform:translateY(14px);
+    animation: rise .8s ease forwards .6s;
+  }
+  .hero .cta:hover{ transform:translateY(-3px); box-shadow:0 16px 32px rgba(0,0,0,0.3); }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .scallop{ position:absolute; left:0; right:0; bottom:-1px; line-height:0; }
+  .scallop svg{ width:100%; height:auto; display:block; }
+  .scallop-fill{ fill:var(--cream); }
+
+  /* ---------- Sections ---------- */
+  section{ padding:78px 0; }
+  .section-head{ text-align:center; max-width:560px; margin:0 auto 44px; }
+  .section-head .kicker{ font-size:.9rem; color:var(--paprika); font-weight:600; }
+  .section-head h2{ font-size:clamp(1.8rem,4.5vw,2.5rem); margin-top:8px; }
+  .section-head .desc{ margin-top:12px; color:var(--ink-soft); font-size:1rem; line-height:1.6; }
+
+  /* ---------- Dish grid ---------- */
+  .grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(210px,1fr));
+    gap:20px;
+  }
+  .card{
+    background: var(--cream-2);
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:26px 20px 22px;
+    text-align:center;
+    cursor:pointer;
+    transition: transform .3s cubic-bezier(.22,.9,.3,1), box-shadow .3s ease, border-color .3s ease;
+    position:relative;
+  }
+  .card:hover, .card:focus-visible{
+    transform:translateY(-6px);
+    box-shadow: var(--card-shadow);
+    border-color: transparent;
+    outline:none;
+  }
+  .card:focus-visible{ box-shadow: var(--card-shadow), 0 0 0 3px var(--saffron); }
+  .card .medallion{
+    width:64px; height:64px; margin:0 auto 14px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.9rem;
+    background: linear-gradient(150deg, var(--saffron), var(--paprika));
+    box-shadow: inset 0 0 0 4px var(--cream);
+  }
+  .card h3{ font-size:1.12rem; margin-bottom:6px; }
+  .card .teaser{ font-size:.86rem; color:var(--ink-soft); line-height:1.5; min-height:2.6em; }
+  .card .tag{
+    display:inline-block; margin-top:14px; padding:4px 12px;
+    border-radius:999px; font-size:.74rem; font-weight:600;
+    background: rgba(107,122,79,0.15); color:var(--olive);
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(20,10,8,0.55);
+    display:flex; align-items:flex-end; justify-content:center;
+    opacity:0; pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-backdrop.open{ opacity:1; pointer-events:auto; }
+  @media (min-width:720px){ .modal-backdrop{ align-items:center; } }
+  .modal{
+    background:var(--cream);
+    width:100%; max-width:600px;
+    max-height:88vh; overflow-y:auto;
+    border-radius:26px 26px 0 0;
+    padding: 30px 26px calc(34px + env(safe-area-inset-bottom,0px));
+    transform:translateY(24px);
+    transition:transform .35s cubic-bezier(.22,.9,.3,1);
+  }
+  @media (min-width:720px){ .modal{ border-radius:26px; padding:38px 40px; transform:translateY(14px) scale(.98); } }
+  .modal-backdrop.open .modal{ transform:translateY(0) scale(1); }
+  .modal-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+  .modal-medallion{
+    width:58px; height:58px; border-radius:50%; flex:none;
+    display:flex; align-items:center; justify-content:center; font-size:1.7rem;
+    background: linear-gradient(150deg, var(--saffron), var(--paprika));
+  }
+  .modal-close{
+    background:var(--cream-2); border:1px solid var(--line); border-radius:50%;
+    width:38px; height:38px; font-size:1.1rem; color:var(--ink);
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .modal h3{ font-size:1.55rem; margin:18px 0 2px; }
+  .modal .origin{ font-size:.86rem; color:var(--paprika); font-weight:600; }
+  .modal .story{ margin-top:16px; line-height:1.7; color:var(--ink-soft); font-size:.98rem; }
+  .modal .block{ margin-top:22px; }
+  .modal .block-label{ font-size:.78rem; font-weight:700; color:var(--olive); }
+  .modal .ing-list{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .modal .ing-list span{ background:var(--cream-2); border:1px solid var(--line); padding:5px 12px; border-radius:999px; font-size:.82rem; }
+  .modal .fact, .modal .touch, .modal .note{
+    margin-top:10px; padding:14px 16px; border-radius:14px; font-size:.9rem; line-height:1.6;
+  }
+  .modal .fact{ background:rgba(232,169,59,0.16); border:1px solid rgba(232,169,59,0.35); }
+  .modal .touch{ background:rgba(107,45,69,0.09); border:1px solid rgba(107,45,69,0.22); }
+  .modal .note{ background:rgba(107,122,79,0.12); border:1px solid rgba(107,122,79,0.26); }
+
+  /* ---------- Quiz ---------- */
+  .quiz-card{
+    background:var(--cream-2); border:1px solid var(--line); border-radius:26px;
+    padding:34px 28px; max-width:600px; margin:0 auto; position:relative;
+  }
+  .quiz-progress{ display:flex; gap:6px; justify-content:center; margin-bottom:24px; }
+  .quiz-progress span{ width:8px; height:8px; border-radius:50%; background:var(--line); transition:background .25s; }
+  .quiz-progress span.done{ background:var(--olive); }
+  .quiz-progress span.active{ background:var(--paprika); }
+  .quiz-q{ font-family:var(--font-display); font-size:1.32rem; text-align:center; line-height:1.4; min-height:2.8em; }
+  .quiz-options{ display:grid; gap:12px; margin-top:24px; }
+  .quiz-opt{
+    text-align:left; background:var(--cream); border:1.5px solid var(--line);
+    border-radius:14px; padding:14px 18px; font-size:.98rem; color:var(--ink);
+    transition:border-color .2s, background .2s, transform .15s;
+  }
+  .quiz-opt:hover{ border-color:var(--saffron); }
+  .quiz-opt.correct{ background:rgba(107,122,79,0.2); border-color:var(--olive); }
+  .quiz-opt.wrong{ background:rgba(194,69,45,0.14); border-color:var(--paprika); }
+  .quiz-opt:disabled{ cursor:default; }
+  .quiz-explain{ margin-top:16px; font-size:.88rem; color:var(--ink-soft); line-height:1.6; min-height:1.4em; }
+  .quiz-foot{ margin-top:24px; display:flex; justify-content:space-between; align-items:center; }
+  .quiz-score{ font-size:.86rem; color:var(--ink-soft); }
+  .quiz-next{
+    background:var(--paprika); color:var(--cream); border:none; padding:11px 22px;
+    border-radius:999px; font-size:.92rem; font-weight:600; opacity:0; pointer-events:none;
+    transition:opacity .25s;
+  }
+  .quiz-next.show{ opacity:1; pointer-events:auto; }
+  .quiz-result{ text-align:center; display:none; }
+  .quiz-result.show{ display:block; }
+  .quiz-result .emoji{ font-size:3rem; }
+  .quiz-result h3{ font-size:1.6rem; margin-top:10px; }
+  .quiz-result p{ margin-top:8px; color:var(--ink-soft); }
+  .quiz-restart{
+    margin-top:22px; background:transparent; border:1.5px solid var(--paprika); color:var(--paprika);
+    padding:10px 20px; border-radius:999px; font-size:.9rem; font-weight:600;
+  }
+  .quiz-live{ display:block; }
+  .quiz-live.hide{ display:none; }
+
+  /* ---------- Did you know ---------- */
+  .fact-zone{ text-align:center; }
+  .fact-card{
+    max-width:560px; margin:0 auto; background:linear-gradient(155deg, var(--plum), var(--paprika-dark));
+    color:var(--cream); border-radius:24px; padding:34px 28px; min-height:120px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:1.15rem; line-height:1.55;
+    box-shadow:var(--card-shadow);
+  }
+  .fact-card span{ opacity:1; transition:opacity .18s ease; }
+  .fact-card span.fading{ opacity:0; }
+  .fact-btn{
+    margin-top:26px; background:var(--ink); color:var(--cream); border:none;
+    padding:14px 28px; border-radius:999px; font-size:.98rem; font-weight:600;
+    transition:transform .2s ease;
+  }
+  .fact-btn:hover{ transform:translateY(-2px); }
+
+  /* ---------- Footer ---------- */
+  footer{
+    text-align:center; padding:70px 24px calc(50px + env(safe-area-inset-bottom,0px));
+    background:var(--cream-2); border-top:1px solid var(--line);
+  }
+  footer h2{ font-size:clamp(1.5rem,4vw,2rem); }
+  footer .tagline{ margin-top:12px; color:var(--paprika); font-weight:600; letter-spacing:.02em; }
+  footer .fineprint{ margin-top:26px; font-size:.8rem; color:var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001s !important; animation-iteration-count:1 !important; transition-duration:.001s !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <span class="brand">A Bite Around the World</span>
+    <nav>
+      <a href="#dishes">Dishes</a>
+      <a href="#challenge">Challenge</a>
+      <a href="#facts">Fun facts</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-pill">🌍 School Food Exhibition</span>
+    <h1>A Bite Around the World 🌎</h1>
+    <p class="subtitle">Every dish has a story.</p>
+    <p class="intro">Walk along our table and you'll travel through kitchens on four continents. Every dish here carries its own history, its own ingredients, and a small personal touch from the student who made it.</p>
+    <a href="#dishes" class="cta">🍽️ Explore the Dishes</a>
+  </div>
+  <div class="scallop">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none"><path class="scallop-fill" d="M0,40 C240,110 480,-20 720,40 C960,100 1200,-20 1440,40 L1440,100 L0,100 Z"></path></svg>
+  </div>
+</header>
+
+<section id="dishes">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Our table</p>
+      <h2>Pick a seat, then a dish</h2>
+      <p class="desc">Tap any card to read the story, the ingredients, and the touch we added ourselves.</p>
+    </div>
+    <div class="grid" id="dishGrid"></div>
+  </div>
+</section>
+
+<section id="challenge">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">🎯 Food Challenge</p>
+      <h2>How well do you know our table?</h2>
+      <p class="desc">Eight quick questions. No wrong turns — every answer teaches you something.</p>
+    </div>
+    <div class="quiz-card">
+      <div id="quizLive" class="quiz-live">
+        <div class="quiz-progress" id="quizProgress"></div>
+        <p class="quiz-q" id="quizQ"></p>
+        <div class="quiz-options" id="quizOptions"></div>
+        <p class="quiz-explain" id="quizExplain"></p>
+        <div class="quiz-foot">
+          <span class="quiz-score" id="quizScore">Score: 0 / 0</span>
+          <button class="quiz-next" id="quizNext">Next question</button>
+        </div>
+      </div>
+      <div class="quiz-result" id="quizResult">
+        <div class="emoji" id="resultEmoji">🌟</div>
+        <h3 id="resultTitle">Food Explorer!</h3>
+        <p id="resultText">You know your food!</p>
+        <button class="quiz-restart" id="quizRestart">Try again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="facts">
+  <div class="wrap fact-zone">
+    <div class="section-head">
+      <p class="kicker">✨ Did You Know?</p>
+      <h2>A little trivia for the road</h2>
+    </div>
+    <div class="fact-card"><span id="factText">Tap the button below for a bite-sized fact.</span></div>
+    <button class="fact-btn" id="factBtn">Tell me something delicious!</button>
+  </div>
+</section>
+
+<footer>
+  <h2>Thank you for visiting our table! 🤍</h2>
+  <p class="tagline">Scan. Explore. Discover. Taste.</p>
+  <p class="fineprint">A Bite Around the World — a student food exhibition</p>
+</footer>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" id="modalBox">
+    <div class="modal-top">
+      <div class="modal-medallion" id="modalMedallion"></div>
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <h3 id="modalName"></h3>
+    <p class="origin" id="modalOrigin"></p>
+    <p class="story" id="modalStory"></p>
+    <div class="block">
+      <p class="block-label">Main ingredients</p>
+      <div class="ing-list" id="modalIngredients"></div>
+    </div>
+    <div class="block">
+      <p class="block-label">Interesting fact</p>
+      <p class="fact" id="modalFact"></p>
+    </div>
+    <div class="block">
+      <p class="block-label">Our special touch</p>
+      <p class="touch" id="modalTouch"></p>
+    </div>
+    <div class="block">
+      <p class="block-label">On the ingredients</p>
+      <p class="note" id="modalNote"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const dishes = [
+  {
+    emoji:"🍃", name:"Stuffed Grape Leaves", origin:"Levantine & Mediterranean",
+    teaser:"Rice and herbs, rolled by hand into tender grape leaves.",
+    story:"Known as warak enab across the Levant and dolma across the wider Ottoman world, this dish has been rolled by hand for generations. Nearly every country around the Eastern Mediterranean claims a version as its own, and every family insists theirs is rolled the right way.",
+    ingredients:["Grape leaves","Rice","Tomato","Parsley & mint","Onion","Lemon","Olive oil"],
+    fact:"The word 'dolma' comes from Turkish for 'stuffed' or 'filled' — the same root gives us stuffed peppers and stuffed zucchini too.",
+    touch:"We roll ours tight and thin, finished with extra lemon and a slow drizzle of olive oil before serving.",
+    note:"Built from rice, herbs, and olive oil, the vegetarian version is naturally light and leans on fresh lemon rather than salt for flavour."
+  },
+  {
+    emoji:"🥮", name:"Luqaimat", origin:"United Arab Emirates & the Gulf",
+    teaser:"Golden dumplings dipped in date syrup, a Ramadan favourite.",
+    story:"These small fried dough balls are a fixture of Gulf hospitality, especially during Ramadan evenings, when trays of them are passed around after the call to prayer. Similar fried sweets appear from Iran to South Asia, each with its own dip.",
+    ingredients:["Flour","Yeast","Cardamom","Saffron","Date syrup (dibs)","Sesame seeds"],
+    fact:"Emirati families often compete gently over whose luqaimat is crispier outside and softer inside — texture is taken seriously.",
+    touch:"Our dough is scented with cardamom and a pinch of saffron, then finished with a light scatter of sesame.",
+    note:"These are fried and dipped in syrup, so they're best enjoyed as a treat — the date syrup is at least a less processed sweetener than refined sugar."
+  },
+  {
+    emoji:"🥐", name:"Croissant", origin:"France (with roots in Austria)",
+    teaser:"Dozens of buttery layers, folded and rolled to a golden crisp.",
+    story:"The croissant's ancestor is the Austrian kipferl, but it was Parisian bakers who turned it into the laminated, flaky pastry the world now associates with French breakfast.",
+    ingredients:["Flour","Butter","Yeast","Sugar","Salt"],
+    fact:"A classic croissant is folded so many times that it ends up with roughly 27 separate layers of butter and dough.",
+    touch:"We shape a few of ours with a hidden square of chocolate, folded in before the final roll.",
+    note:"The layers come from a generous amount of butter, so it's a rich, occasional pastry rather than an everyday one — there's no way around that and we're not pretending otherwise."
+  },
+  {
+    emoji:"🍰", name:"Cheesecake", origin:"Ancient Greece to modern New York",
+    teaser:"A creamy classic with a history older than most desserts on the table.",
+    story:"Cheesecake is often traced back to ancient Greece, where a simple version was reportedly served to athletes at the first Olympic Games. It travelled through Rome and Europe before cream cheese gave it the dense, tangy form we know today.",
+    ingredients:["Cream cheese","Sugar","Eggs","Biscuit crust","Vanilla","Fresh berries"],
+    fact:"There are hundreds of regional cheesecakes today, from Basque burnt cheesecake to Japanese 'cotton' cheesecake, which is closer to a soufflé.",
+    touch:"Ours is finished with a fresh berry compote made without any added syrup — just cooked-down fruit.",
+    note:"It's rich in dairy and sugar by nature, so the fruit topping is there for real freshness, not just decoration."
+  },
+  {
+    emoji:"🧇", name:"Waffles", origin:"Belgium & the Netherlands",
+    teaser:"A crisp grid of dough, best with fruit piled generously on top.",
+    story:"Waffles descend from medieval European wafer irons used over open fires. The Belgian waffle became a global favourite after it was introduced to American audiences at the 1964 World's Fair in New York.",
+    ingredients:["Flour","Eggs","Milk","Butter","Baking powder"],
+    fact:"Belgian waffles have deeper pockets than American ones, which is exactly why they hold toppings so well.",
+    touch:"We top ours with seasonal fruit and a light drizzle of honey instead of syrup.",
+    note:"Swapping syrup for honey and fresh fruit cuts down on the sugar while still keeping things sweet."
+  },
+  {
+    emoji:"🥣", name:"Granola & Yogurt", origin:"United States",
+    teaser:"Toasted oats and honey layered over cool, creamy yogurt.",
+    story:"Granola was invented in a 19th-century American health sanitarium as a wellness food, originally baked twice and called 'granula' before a name change avoided a trademark dispute.",
+    ingredients:["Rolled oats","Nuts","Honey","Yogurt","Fresh fruit"],
+    fact:"The very first granola was so hard that people had to soak it in milk overnight before it was edible.",
+    touch:"We toast our oats in-house with local honey and dates, then layer them fresh so they stay crunchy.",
+    note:"This is one of the lighter dishes on our table — naturally high in fibre from the oats and protein from the yogurt."
+  },
+  {
+    emoji:"🥖", name:"Manakish", origin:"Levant",
+    teaser:"Warm flatbread brushed with olive oil and wild thyme.",
+    story:"A breakfast staple across Lebanon, Syria, Palestine, and Jordan, manakish is baked fresh each morning in stone ovens and sold by the piece, much like a personal pizza built around herbs instead of tomato sauce.",
+    ingredients:["Flour dough","Za'atar (thyme, sumac, sesame)","Olive oil","Cheese (optional)"],
+    fact:"Every Levantine family tends to guard its own za'atar blend recipe — the exact ratio of thyme to sumac to sesame is rarely written down.",
+    touch:"We hand-stretch the dough to order and finish it with a generous brush of extra virgin olive oil.",
+    note:"The za'atar version is lighter than the cheese version, and olive oil brings mostly unsaturated fat to the table."
+  },
+  {
+    emoji:"🍥", name:"Cinnamon Rolls", origin:"Sweden",
+    teaser:"Soft swirled dough, warm cinnamon, and a light glaze.",
+    story:"Sweden's kanelbulle is a cornerstone of fika, the daily coffee-and-pastry break woven into Swedish culture. The fully iced, oversized version popular in the US came later, once the recipe crossed the Atlantic.",
+    ingredients:["Yeast dough","Cinnamon & sugar filling","Butter","Light icing"],
+    fact:"Sweden has an official holiday for this pastry — Kanelbullens dag, celebrated every October 4th.",
+    touch:"We keep our glaze light instead of thick, so the cinnamon stays the star rather than being buried in icing.",
+    note:"It's a sweet treat by design, but a lighter glaze means less added sugar than the heavily frosted versions."
+  },
+  {
+    emoji:"🍵", name:"Milk Tea", origin:"Hong Kong & Taiwan",
+    teaser:"Strong black tea, silky milk, and a gentle sweetness.",
+    story:"Hong Kong milk tea grew out of British tea culture blended with local taste, strained through a cloth bag until silky smooth. Taiwan later built its own milk tea culture around it, eventually adding chewy tapioca pearls to create bubble tea.",
+    ingredients:["Black tea","Milk","Sugar","Tapioca pearls (optional)"],
+    fact:"Hong Kong milk tea is nicknamed 'silk stocking tea' because of the stocking-like cloth used to strain it to a silky finish.",
+    touch:"We brew ours extra strong, chill it, and sweeten it lightly so the tea flavour still comes through.",
+    note:"Cutting back on sugar and skipping the tapioca pearls turns this into a noticeably lighter cup."
+  },
+  {
+    emoji:"🥤", name:"Mojito", origin:"Cuba",
+    teaser:"Fresh mint and lime, muddled into a fizzy, cooling mocktail.",
+    story:"The mojito traces back to Havana and is often linked to older Cuban drinks made with sugarcane spirits, mint, and lime. Our version keeps the refreshing mint-and-lime combination without any alcohol.",
+    ingredients:["Fresh mint","Lime","Sugar or syrup","Soda water"],
+    fact:"One theory traces the drink's name to the Spanish word 'mojar,' meaning 'to wet' — fitting for a drink built entirely around fresh juice and soda.",
+    touch:"We muddle our mint and lime by hand and go light on the syrup, letting the soda water carry the fizz.",
+    note:"With mint and lime doing most of the flavour work, this is one of the lightest, most naturally refreshing drinks on the table."
+  }
+];
+
+const quizQuestions = [
+  { q:"Which dish is rolled by hand using grape leaves?", options:["Manakish","Stuffed Grape Leaves","Luqaimat","Mojito"], correct:1, explain:"Stuffed Grape Leaves (warak enab) are rice and herbs rolled tightly inside grape leaves." },
+  { q:"Which dish leans on cinnamon as its star spice?", options:["Cinnamon Rolls","Waffles","Milk Tea","Cheesecake"], correct:0, explain:"Cinnamon Rolls are built entirely around a cinnamon-sugar filling swirled through soft dough." },
+  { q:"Which dish is Levantine and topped with za'atar?", options:["Croissant","Granola & Yogurt","Manakish","Luqaimat"], correct:2, explain:"Manakish is a Levantine flatbread traditionally topped with za'atar, olive oil, and sometimes cheese." },
+  { q:"Which dish is made mainly from oats, yogurt, and toppings?", options:["Waffles","Granola & Yogurt","Cheesecake","Milk Tea"], correct:1, explain:"Granola & Yogurt layers toasted oats and fruit over cool, creamy yogurt." },
+  { q:"Which dessert is fried and dipped in date syrup?", options:["Cinnamon Rolls","Croissant","Luqaimat","Cheesecake"], correct:2, explain:"Luqaimat are fried dough balls traditionally dipped in date syrup (dibs)." },
+  { q:"Which drink traces its roots to Cuba?", options:["Milk Tea","Mojito","Manakish","Waffles"], correct:1, explain:"The mojito is linked to Havana and older Cuban drinks built on mint, lime, and sugarcane." },
+  { q:"Which pastry is known for dozens of buttery, laminated layers?", options:["Croissant","Cinnamon Rolls","Manakish","Granola & Yogurt"], correct:0, explain:"A croissant is folded repeatedly, creating around 27 layers of butter and dough." },
+  { q:"Which drink is nicknamed 'silk stocking tea' in Hong Kong?", options:["Mojito","Luqaimat","Milk Tea","Waffles"], correct:2, explain:"Hong Kong milk tea is strained through a cloth bag until silky, earning it that nickname." }
+];
+
+const funFacts = [
+  "Dolma-style stuffed leaves are claimed by so many countries that food historians still debate exactly where the dish began.",
+  "A classic croissant can have close to 27 distinct layers of butter and dough, thanks to repeated folding.",
+  "Sweden has an official holiday just for cinnamon rolls — Kanelbullens dag, every October 4th.",
+  "The first American granola was baked twice and originally sold under the name 'granula.'",
+  "Hong Kong milk tea gets its silky texture from being strained through a cloth that looks like a stocking.",
+  "Cheesecake may be one of the oldest desserts on this table — versions were served to athletes in ancient Greece.",
+  "Belgian waffles only became a global favourite after being introduced at the 1964 World's Fair in New York.",
+  "Za'atar blends used on manakish are often closely guarded family recipes, rarely written down.",
+  "The mojito's name may come from the Spanish word 'mojar,' meaning 'to wet.'",
+  "Luqaimat are a Ramadan-evening favourite across the Gulf, often served warm straight from the fryer."
+];
+
+/* ---------- Build dish cards ---------- */
+const grid = document.getElementById('dishGrid');
+dishes.forEach((d, i) => {
+  const card = document.createElement('button');
+  card.className = 'card';
+  card.setAttribute('aria-label', 'Open ' + d.name);
+  card.innerHTML = `
+    <div class="medallion">${d.emoji}</div>
+    <h3>${d.name}</h3>
+    <p class="teaser">${d.teaser}</p>
+    <span class="tag">${d.origin}</span>
+  `;
+  card.addEventListener('click', () => openModal(i));
+  grid.appendChild(card);
+});
+
+/* ---------- Modal ---------- */
+const backdrop = document.getElementById('modalBackdrop');
+function openModal(i){
+  const d = dishes[i];
+  document.getElementById('modalMedallion').textContent = d.emoji;
+  document.getElementById('modalName').textContent = d.name;
+  document.getElementById('modalOrigin').textContent = d.origin;
+  document.getElementById('modalStory').textContent = d.story;
+  document.getElementById('modalIngredients').innerHTML = d.ingredients.map(x => `<span>${x}</span>`).join('');
+  document.getElementById('modalFact').textContent = d.fact;
+  document.getElementById('modalTouch').textContent = d.touch;
+  document.getElementById('modalNote').textContent = d.note;
+  backdrop.classList.add('open');
+  document.getElementById('modalBox').scrollTop = 0;
+}
+function closeModal(){ backdrop.classList.remove('open'); }
+document.getElementById('modalClose').addEventListener('click', closeModal);
+backdrop.addEventListener('click', e => { if(e.target === backdrop) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+/* ---------- Top nav show/hide ---------- */
+const topnav = document.getElementById('topnav');
+window.addEventListener('scroll', () => {
+  if(window.scrollY > window.innerHeight * 0.6){ topnav.classList.add('show'); }
+  else{ topnav.classList.remove('show'); }
+});
+
+/* ---------- Quiz ---------- */
+let qIndex = 0, score = 0, answered = false;
+const progressWrap = document.getElementById('quizProgress');
+quizQuestions.forEach(() => {
+  const dot = document.createElement('span');
+  progressWrap.appendChild(dot);
+});
+function renderQuestion(){
+  answered = false;
+  const q = quizQuestions[qIndex];
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizExplain').textContent = '';
+  document.getElementById('quizNext').classList.remove('show');
+  document.getElementById('quizScore').textContent = `Score: ${score} / ${qIndex}`;
+  [...progressWrap.children].forEach((dot, i) => {
+    dot.classList.toggle('done', i < qIndex);
+    dot.classList.toggle('active', i === qIndex);
+  });
+  const opts = document.getElementById('quizOptions');
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => selectAnswer(i));
+    opts.appendChild(btn);
+  });
+}
+function selectAnswer(i){
+  if(answered) return;
+  answered = true;
+  const q = quizQuestions[qIndex];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((btn, idx) => {
+    btn.disabled = true;
+    if(idx === q.correct) btn.classList.add('correct');
+    else if(idx === i) btn.classList.add('wrong');
+  });
+  if(i === q.correct) score++;
+  document.getElementById('quizExplain').textContent = q.explain;
+  document.getElementById('quizScore').textContent = `Score: ${score} / ${qIndex + 1}`;
+  const nextBtn = document.getElementById('quizNext');
+  nextBtn.textContent = (qIndex === quizQuestions.length - 1) ? 'See my result' : 'Next question';
+  nextBtn.classList.add('show');
+}
+document.getElementById('quizNext').addEventListener('click', () => {
+  qIndex++;
+  if(qIndex >= quizQuestions.length){ showResult(); }
+  else{ renderQuestion(); }
+});
+function showResult(){
+  document.getElementById('quizLive').classList.add('hide');
+  const result = document.getElementById('quizResult');
+  result.classList.add('show');
+  const total = quizQuestions.length;
+  let emoji, title, text;
+  if(score === total){ emoji = '🌟'; title = 'Food Explorer!'; text = 'Perfect score — you know your food!'; }
+  else if(score >= total * 0.6){ emoji = '🍽️'; title = 'Curious Taster!'; text = `You got ${score} out of ${total} — you've clearly been paying attention at the table.`; }
+  else{ emoji = '🧭'; title = 'World Wanderer!'; text = `You got ${score} out of ${total} — go take another lap around the table and try again.`; }
+  document.getElementById('resultEmoji').textContent = emoji;
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultText').textContent = text;
+}
+document.getElementById('quizRestart').addEventListener('click', () => {
+  qIndex = 0; score = 0;
+  document.getElementById('quizResult').classList.remove('show');
+  document.getElementById('quizLive').classList.remove('hide');
+  renderQuestion();
+});
+renderQuestion();
+
+/* ---------- Did You Know ---------- */
+const factText = document.getElementById('factText');
+let lastFact = -1;
+document.getElementById('factBtn').addEventListener('click', () => {
+  let next;
+  do{ next = Math.floor(Math.random() * funFacts.length); } while(next === lastFact && funFacts.length > 1);
+  lastFact = next;
+  factText.classList.add('fading');
+  setTimeout(() => {
+    factText.textContent = funFacts[next];
+    factText.classList.remove('fading');
+  }, 180);
+});
+</script>
+</body>
+</html>
